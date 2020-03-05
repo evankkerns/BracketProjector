@@ -10,7 +10,12 @@ Public Class MarchAlgorithm
         Dim theRankings As KenPomRankings = loadRankings()
         Dim theBracket As List(Of String) = getBracketList2019()
 
-        testDataIntegrity(theRankings, theBracket)
+        theBracket = simRound(theRankings, theBracket, 64)
+        theBracket = simRound(theRankings, theBracket, 32)
+        theBracket = simRound(theRankings, theBracket, 16)
+        theBracket = simRound(theRankings, theBracket, 8)
+        theBracket = simRound(theRankings, theBracket, 4)
+        theBracket = simRound(theRankings, theBracket, 2)
 
         Return sb.ToString
     End Function
@@ -38,7 +43,22 @@ Public Class MarchAlgorithm
         Return New Team
     End Function
 
-    Public Shared Function firstRound(theRankings As KenPomRankings, theBracket As List(Of String)) As List(Of String)
+    Public Shared Function simRound(theRankings As KenPomRankings, theBracket As List(Of String), teamsInRound As Integer) As List(Of String)
+        Dim newBracket As New List(Of String)
+
+        For i = 0 To teamsInRound - 2 Step 2
+            Dim teamA As Team = getKPR(theRankings, theBracket(i))
+            Dim teamB As Team = getKPR(theRankings, theBracket(i + 1))
+
+            Dim score = CInt(Math.Ceiling(Rnd() * (teamA.AdjEM + teamB.AdjEM + 60))) + 1
+            If score < teamA.AdjEM + 30 Then
+                newBracket.Add(theBracket(i))
+            Else
+                newBracket.Add(theBracket(i + 1))
+            End If
+        Next
+
+        Return newBracket
     End Function
 
     Public Shared Function getBracketList2019() As List(Of String)

@@ -20,19 +20,6 @@ Public Class MarchAlgorithm
         Return sb.ToString
     End Function
 
-    Public Shared Function testDataIntegrity(theRankings As KenPomRankings, theBracket As List(Of String)) As Boolean
-        Dim pass As Boolean = True
-
-        For Each team In theBracket
-            Dim kpTeam As Team = getKPR(theRankings, team)
-            If kpTeam.Team = "" Then
-                pass = False
-            End If
-        Next
-
-        Return pass
-    End Function
-
     Public Shared Function getKPR(theRankings As KenPomRankings, teamName As String) As Team
         For Each team In theRankings.teams
             If teamName = team.Team Then
@@ -50,8 +37,12 @@ Public Class MarchAlgorithm
             Dim teamA As Team = getKPR(theRankings, theBracket(i))
             Dim teamB As Team = getKPR(theRankings, theBracket(i + 1))
 
-            Dim score = CInt(Math.Ceiling(Rnd() * (teamA.AdjEM + teamB.AdjEM + 60))) + 1
-            If score < teamA.AdjEM + 30 Then
+            Dim oDiff As Double = (teamA.AdjO - teamB.AdjO) * 4
+            Dim dDiff As Double = (teamB.AdjD - teamA.AdjD) * 6
+            Dim diff As Double = (oDiff + dDiff) / 2
+
+            Dim score = CInt(Math.Ceiling(Rnd() * (100))) + 1
+            If score < diff + 50 Then
                 newBracket.Add(theBracket(i))
             Else
                 newBracket.Add(theBracket(i + 1))
@@ -80,6 +71,19 @@ Public Class MarchAlgorithm
             "Iowa St. 6", "Ohio St. 11", "Houston 3", "Georgia St. 14",
             "Wofford 7", "Seton Hall 10", "Kentucky 2", "Abilene Christian 15"
         }
+    End Function
+
+    Public Shared Function testDataIntegrity(theRankings As KenPomRankings, theBracket As List(Of String)) As Boolean
+        Dim pass As Boolean = True
+
+        For Each team In theBracket
+            Dim kpTeam As Team = getKPR(theRankings, team)
+            If kpTeam.Team = "" Then
+                pass = False
+            End If
+        Next
+
+        Return pass
     End Function
 
     Public Shared Function loadRankings() As KenPomRankings

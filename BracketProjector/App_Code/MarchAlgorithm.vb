@@ -10,12 +10,82 @@ Public Class MarchAlgorithm
         Dim theRankings As KenPomRankings = loadRankings()
         Dim theBracket As List(Of String) = getBracketList2019()
 
+        sb.Append("<table>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 1))
         theBracket = simRound(theRankings, theBracket, 64)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 2))
         theBracket = simRound(theRankings, theBracket, 32)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 4))
         theBracket = simRound(theRankings, theBracket, 16)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 8))
         theBracket = simRound(theRankings, theBracket, 8)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 16))
         theBracket = simRound(theRankings, theBracket, 4)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 32))
         theBracket = simRound(theRankings, theBracket, 2)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append("<b>" + printTeams(theBracket, 64) + "</b>")
+        sb.Append("</td>")
+
+        sb.Append("</table>")
+
+        Return sb.ToString
+    End Function
+
+    Public Shared Function simRound(theRankings As KenPomRankings, theBracket As List(Of String), teamsInRound As Integer) As List(Of String)
+        Dim newBracket As New List(Of String)
+        Dim rands As New List(Of Integer)
+        Dim r As New Random
+
+        For i = 0 To teamsInRound - 2 Step 2
+            Dim teamA As Team = getKPR(theRankings, theBracket(i))
+            Dim teamB As Team = getKPR(theRankings, theBracket(i + 1))
+
+            Dim oDiff As Double = (teamA.AdjO - teamB.AdjO) * 3
+            Dim dDiff As Double = (teamB.AdjD - teamA.AdjD) * 4
+            Dim diff As Double = (oDiff + dDiff) / 2
+
+            Dim score = r.Next(1, 100)
+            'rands.Add(diff + 50)
+            rands.Add(score)
+            If score < diff + 50 Then
+                newBracket.Add(theBracket(i))
+            Else
+                newBracket.Add(theBracket(i + 1))
+            End If
+        Next
+
+        Return newBracket
+    End Function
+
+    Public Shared Function printTeams(theBracket As List(Of String), round As Integer) As String
+        Dim sb As New StringBuilder
+
+        For Each team In theBracket
+            sb.Append(team)
+            For i = 0 To round - 1
+                sb.Append("<br/>")
+            Next
+        Next
 
         Return sb.ToString
     End Function
@@ -28,28 +98,6 @@ Public Class MarchAlgorithm
         Next
 
         Return New Team
-    End Function
-
-    Public Shared Function simRound(theRankings As KenPomRankings, theBracket As List(Of String), teamsInRound As Integer) As List(Of String)
-        Dim newBracket As New List(Of String)
-
-        For i = 0 To teamsInRound - 2 Step 2
-            Dim teamA As Team = getKPR(theRankings, theBracket(i))
-            Dim teamB As Team = getKPR(theRankings, theBracket(i + 1))
-
-            Dim oDiff As Double = (teamA.AdjO - teamB.AdjO) * 4
-            Dim dDiff As Double = (teamB.AdjD - teamA.AdjD) * 6
-            Dim diff As Double = (oDiff + dDiff) / 2
-
-            Dim score = CInt(Math.Ceiling(Rnd() * (100))) + 1
-            If score < diff + 50 Then
-                newBracket.Add(theBracket(i))
-            Else
-                newBracket.Add(theBracket(i + 1))
-            End If
-        Next
-
-        Return newBracket
     End Function
 
     Public Shared Function getBracketList2019() As List(Of String)

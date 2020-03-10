@@ -1,6 +1,8 @@
 ﻿Imports System.Web.Script.Serialization
 
 Public Class MarchAlgorithm
+    Dim timesWrong(16) As Integer
+
     Public Sub New()
         predictBracket()
     End Sub
@@ -53,7 +55,6 @@ Public Class MarchAlgorithm
 
     Public Shared Function simRound(theRankings As KenPomRankings, theBracket As List(Of String), teamsInRound As Integer) As List(Of String)
         Dim newBracket As New List(Of String)
-        Dim rands As New List(Of Integer)
         Dim r As New Random
 
         For i = 0 To teamsInRound - 2 Step 2
@@ -65,8 +66,6 @@ Public Class MarchAlgorithm
             Dim diff As Double = (oDiff + dDiff) / 2
 
             Dim score = r.Next(1, 100)
-            'rands.Add(diff + 50)
-            rands.Add(score)
             If score < diff + 50 Then
                 newBracket.Add(theBracket(i))
             Else

@@ -51,6 +51,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/">Calculate</a></li>
+                        <li><a runat="server" href="~/Sims">Run Sims</a></li>
                         <li><a runat="server" href="https://evankkerns.github.io/">By Evan Kerns</a></li>
                         <li><a runat="server" href="https://kenpom.com/">KenPom Rankings</a></li>
                     </ul>

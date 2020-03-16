@@ -7,6 +7,147 @@ Public Class MarchAlgorithm
         predictBracket()
     End Sub
 
+    Public Shared Function runBracket() As String
+        Dim sb As New StringBuilder
+        Dim theRankings As KenPomRankings = loadRankings()
+        Dim theBracket As List(Of String) = getBracketList2020()
+        Dim theFirstFour As List(Of String) = getFirstFour2020()
+
+        'testDataIntegrity(theRankings, theBracket)
+        theBracket(1) = HttpContext.Current.Session("0game0")
+        theBracket(25) = HttpContext.Current.Session("0game1")
+        theBracket(49) = HttpContext.Current.Session("0game2")
+        theBracket(57) = HttpContext.Current.Session("0game3")
+
+        Dim game = HttpContext.Current.Request.QueryString("game")
+        Dim round = HttpContext.Current.Request.QueryString("round")
+        If game <> "" Then
+            If round = "0" Then
+                HttpContext.Current.Session(round + "game" + game) = simOneGame(theRankings, theFirstFour, Integer.Parse(game))
+            Else
+                HttpContext.Current.Session(round + "game" + game) = simOneGame(theRankings, theBracket, Integer.Parse(game))
+            End If
+        End If
+
+        theBracket(1) = HttpContext.Current.Session("0game0")
+        theBracket(25) = HttpContext.Current.Session("0game1")
+        theBracket(49) = HttpContext.Current.Session("0game2")
+        theBracket(57) = HttpContext.Current.Session("0game3")
+
+        sb.Append("<table>")
+
+        sb.Append("<td>")
+        sb.Append(printNewGames(theBracket, 1))
+        theBracket = simRound(theRankings, theBracket, 64)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printNewGames(theBracket, 2))
+        'theBracket = simRound(theRankings, theBracket, 32)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        'sb.Append(printTeams(theBracket, 4))
+        'theBracket = simRound(theRankings, theBracket, 16)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        'sb.Append(printTeams(theBracket, 8))
+        'theBracket = simRound(theRankings, theBracket, 8)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        'sb.Append(printTeams(theBracket, 16))
+        'theBracket = simRound(theRankings, theBracket, 4)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        'sb.Append(printTeams(theBracket, 32))
+        'theBracket = simRound(theRankings, theBracket, 2)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        'sb.Append("<b>" + printTeams(theBracket, 64) + "</b>")
+        sb.Append("</td>")
+
+        sb.Append("</table>")
+
+        Return sb.ToString
+    End Function
+
+    Public Shared Function simOneGame(theRankings As KenPomRankings, theBracket As List(Of String), game As Integer) As String
+        Dim winner As String = ""
+        Dim index As Integer = game * 2
+        Dim r As New Random
+
+        Dim teamA As Team = getKPR(theRankings, theBracket(index))
+        Dim teamB As Team = getKPR(theRankings, theBracket(index + 1))
+
+        Dim oDiff As Double = (teamA.AdjO - teamB.AdjO) * 3
+        Dim dDiff As Double = (teamB.AdjD - teamA.AdjD) * 4
+        Dim diff As Double = (oDiff + dDiff) / 2
+
+        Dim score = r.Next(1, 100)
+        If score < diff + 50 Then
+            winner = theBracket(index)
+        Else
+            winner = theBracket(index + 1)
+        End If
+
+        Return winner
+    End Function
+
+    Public Shared Function printNewGames(theBracket As List(Of String), round As Integer) As String
+        Dim sb As New StringBuilder
+        Dim cntr As Integer = 0
+
+        For Each team In theBracket
+            Dim output As String = "<a href=""?game=" + cntr.ToString + "&round=" + round.ToString + """>Play Game!</a>"
+            If HttpContext.Current.Session(round.ToString + "game" + cntr.ToString) <> "" Then
+                output = HttpContext.Current.Session(round.ToString + "game" + cntr.ToString)
+            End If
+            Select Case round
+                Case 1
+                    If team <> "" Then
+                        sb.Append(team)
+                    Else
+                        Dim firstFour As String = ""
+                        Select Case cntr
+                            Case 1
+                                firstFour = "0"
+                            Case 25
+                                firstFour = "1"
+                            Case 49
+                                firstFour = "2"
+                            Case 57
+                                firstFour = "3"
+                        End Select
+                        sb.Append("<a href=""?game=" + firstFour + "&round=0"">Play Game!</a>")
+                    End If
+
+                    For i = 0 To round - 1
+                        sb.Append("<br/>")
+                    Next
+                Case 2
+                    sb.Append(output)
+                    For i = 0 To round - 1
+                        sb.Append("<br/>")
+                    Next
+                Case 4, 8, 16, 32, 64
+                    For i = 0 To (round / 2) - 1
+                        sb.Append("<br/>")
+                    Next
+                    sb.Append(team)
+                    For i = 0 To (round / 2) - 1
+                        sb.Append("<br/>")
+                    Next
+            End Select
+            cntr += 1
+        Next
+
+        Return sb.ToString
+    End Function
+
     Public Shared Function predictBracket() As String
         Dim sb As New StringBuilder
         Dim theRankings As KenPomRankings = loadRankings()
@@ -99,6 +240,34 @@ Public Class MarchAlgorithm
         Return New Team
     End Function
 
+    Public Shared Function getBracketList2020() As List(Of String)
+        Return New List(Of String) From {
+            "Kansas", "", "Arizona St.", "Florida",
+            "Wisconsin", "East Tennessee St.", "Kentucky", "Vermont",
+            "Illinois", "Cincinnati", "Duke", "Little Rock",
+            "Michigan", "Utah St.", "Creighton", "Belmont",
+            "Baylor", "Boston University", "Marquette", "Arizona",
+            "Ohio St.", "Yale", "Butler", "Bradley",
+            "Virginia", "", "Maryland", "UC Irvine",
+            "Providence", "LSU", "Florida St.", "Northern Kentucky",
+            "Dayton", "Winthrop", "Saint Mary's", "Oklahoma",
+            "Auburn", "Akron", "Louisville", "Liberty",
+            "West Virginia", "Rutgers", "Michigan St.", "North Texas",
+            "USC", "Indiana", "Villanova", "North Dakota St.",
+            "Gonzaga", "", "Houston", "Colorado",
+            "Penn St.", "Stephen F. Austin", "Oregon", "New Mexico St.",
+            "BYU", "", "Seton Hall", "Hofstra",
+            "Iowa", "Xavier", "San Diego St.", "Eastern Washington"
+            }
+    End Function
+
+    Public Shared Function getFirstFour2020() As List(Of String)
+        Return New List(Of String) From {
+            "North Carolina Central", "Robert Morris", "Richmond", "Wichita St.",
+            "Prairie View A&M", "Siena", "Stanford", "UCLA"
+            }
+    End Function
+
     Public Shared Function getBracketList2019() As List(Of String)
         Return New List(Of String) From {
             "Duke 1", "North Dakota St. 16", "VCU 8", "UCF 9",
@@ -134,6 +303,6 @@ Public Class MarchAlgorithm
     End Function
 
     Public Shared Function loadRankings() As KenPomRankings
-        Return New JavaScriptSerializer().Deserialize(Of KenPomRankings)(System.IO.File.ReadAllText("C:\Users\Monster\source\repos\BracketProjector\BracketProjector\App_Data\rankings.json"))
+        Return New JavaScriptSerializer().Deserialize(Of KenPomRankings)(System.IO.File.ReadAllText("C:\Users\Monster\source\repos\BracketProjector\BracketProjector\App_Data\rankings20.json"))
     End Function
 End Class

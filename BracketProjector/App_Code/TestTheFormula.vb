@@ -13,7 +13,8 @@
         Dim sb As New StringBuilder
         Dim sbTest As New StringBuilder
         Dim theRankings As KenPomRankings = MarchAlgorithm.loadRankings()
-        Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2019()
+        Dim theFirstFour As List(Of String) = MarchAlgorithm.getFirstFour2020()
+        Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2020()
         Dim realWinners As List(Of String) = testBracketRd1in2019()
         Dim r As New Random
         Dim startTime As DateTime = DateTime.Now

@@ -10,7 +10,7 @@ Public Class MarchAlgorithm
     Public Shared Function runBracket() As String
         Dim sb As New StringBuilder
         Dim theRankings As KenPomRankings = loadRankings()
-        Dim theBracket As List(Of String) = getBracketList2020()
+        Dim theBracket As List(Of String) = getBracketList2019()
 
         sb.Append("<table>")
 
@@ -437,6 +437,6 @@ Public Class MarchAlgorithm
     End Function
 
     Public Shared Function loadRankings() As KenPomRankings
-        Return New JavaScriptSerializer().Deserialize(Of KenPomRankings)(System.IO.File.ReadAllText("C:\Users\Monster\source\repos\BracketProjector\BracketProjector\App_Data\rankings20.json"))
+        Return New JavaScriptSerializer().Deserialize(Of KenPomRankings)(System.IO.File.ReadAllText("C:\Users\Monster\source\repos\BracketProjector\BracketProjector\App_Data\rankings19.json"))
     End Function
 End Class

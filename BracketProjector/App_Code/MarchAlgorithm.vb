@@ -11,13 +11,64 @@ Public Class MarchAlgorithm
         Dim sb As New StringBuilder
         Dim theRankings As KenPomRankings = loadRankings()
         Dim theBracket As List(Of String) = getBracketList2020()
+
+        sb.Append("<table>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 1))
+        theBracket = simRound(theRankings, theBracket, 64)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 2))
+        theBracket = simRound(theRankings, theBracket, 32)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 4))
+        theBracket = simRound(theRankings, theBracket, 16)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 8))
+        theBracket = simRound(theRankings, theBracket, 8)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 16))
+        theBracket = simRound(theRankings, theBracket, 4)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 32))
+        theBracket = simRound(theRankings, theBracket, 2)
+        sb.Append("</td>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 64))
+        sb.Append("</td>")
+
+        sb.Append("</table>")
+
+        Return sb.ToString
+    End Function
+
+    Public Shared Function runBracketPerRound() As String
+        Dim sb As New StringBuilder
+        Dim theRankings As KenPomRankings = loadRankings()
+        Dim theBracket As List(Of String) = getBracketList2020()
+        Dim theSecondRound As List(Of String) = getBracketList2020SecondRound()
+        Dim theSweetSixteen As List(Of String) = getBracketList2020SweetSixteen()
+        Dim theEliteEight As List(Of String) = getBracketList2020EliteEight()
+        Dim theFinalFour As List(Of String) = getBracketList2020FinalFour()
+        Dim theChampionship As List(Of String) = getBracketList2020Championship()
         Dim theFirstFour As List(Of String) = getFirstFour2020()
 
         'testDataIntegrity(theRankings, theBracket)
-        theBracket(1) = HttpContext.Current.Session("0game0")
-        theBracket(25) = HttpContext.Current.Session("0game1")
-        theBracket(49) = HttpContext.Current.Session("0game2")
-        theBracket(57) = HttpContext.Current.Session("0game3")
+        'theBracket(1) = HttpContext.Current.Session("0game0")
+        'theBracket(25) = HttpContext.Current.Session("0game1")
+        'theBracket(49) = HttpContext.Current.Session("0game2")
+        'theBracket(57) = HttpContext.Current.Session("0game3")
 
         Dim game = HttpContext.Current.Request.QueryString("game")
         Dim round = HttpContext.Current.Request.QueryString("round")
@@ -25,49 +76,49 @@ Public Class MarchAlgorithm
             If round = "0" Then
                 HttpContext.Current.Session(round + "game" + game) = simOneGame(theRankings, theFirstFour, Integer.Parse(game))
             Else
-                HttpContext.Current.Session(round + "game" + game) = simOneGame(theRankings, theBracket, Integer.Parse(game))
+                HttpContext.Current.Session(round + "game" + game) = simOneGame(theRankings, theChampionship, Integer.Parse(game))
             End If
         End If
 
-        theBracket(1) = HttpContext.Current.Session("0game0")
-        theBracket(25) = HttpContext.Current.Session("0game1")
-        theBracket(49) = HttpContext.Current.Session("0game2")
-        theBracket(57) = HttpContext.Current.Session("0game3")
+        'theBracket(1) = HttpContext.Current.Session("0game0")
+        'theBracket(25) = HttpContext.Current.Session("0game1")
+        'theBracket(49) = HttpContext.Current.Session("0game2")
+        'theBracket(57) = HttpContext.Current.Session("0game3")
 
         sb.Append("<table>")
 
         sb.Append("<td>")
-        sb.Append(printNewGames(theBracket, 1))
-        theBracket = simRound(theRankings, theBracket, 64)
+        sb.Append(printTeams(theBracket, 1))
+        'theBracket = simRound(theRankings, theBracket, 64)
         sb.Append("</td>")
 
         sb.Append("<td>")
-        sb.Append(printNewGames(theBracket, 2))
-        'theBracket = simRound(theRankings, theBracket, 32)
+        sb.Append(printTeams(theSecondRound, 2))
+        'theSecondRound = simRound(theRankings, theSecondRound, 32)
         sb.Append("</td>")
 
         sb.Append("<td>")
-        'sb.Append(printTeams(theBracket, 4))
+        sb.Append(printTeams(theSweetSixteen, 4))
         'theBracket = simRound(theRankings, theBracket, 16)
         sb.Append("</td>")
 
         sb.Append("<td>")
-        'sb.Append(printTeams(theBracket, 8))
+        sb.Append(printTeams(theEliteEight, 8))
         'theBracket = simRound(theRankings, theBracket, 8)
         sb.Append("</td>")
 
         sb.Append("<td>")
-        'sb.Append(printTeams(theBracket, 16))
+        sb.Append(printTeams(theFinalFour, 16))
         'theBracket = simRound(theRankings, theBracket, 4)
         sb.Append("</td>")
 
         sb.Append("<td>")
-        'sb.Append(printTeams(theBracket, 32))
+        sb.Append(printTeams(theChampionship, 32))
         'theBracket = simRound(theRankings, theBracket, 2)
         sb.Append("</td>")
 
         sb.Append("<td>")
-        'sb.Append("<b>" + printTeams(theBracket, 64) + "</b>")
+        sb.Append(printNewGames(theChampionship, 64, 1))
         sb.Append("</td>")
 
         sb.Append("</table>")
@@ -97,17 +148,16 @@ Public Class MarchAlgorithm
         Return winner
     End Function
 
-    Public Shared Function printNewGames(theBracket As List(Of String), round As Integer) As String
+    Public Shared Function printNewGames(theBracket As List(Of String), round As Integer, teams As Integer) As String
         Dim sb As New StringBuilder
         Dim cntr As Integer = 0
-
-        For Each team In theBracket
-            Dim output As String = "<a href=""?game=" + cntr.ToString + "&round=" + round.ToString + """>Play Game!</a>"
-            If HttpContext.Current.Session(round.ToString + "game" + cntr.ToString) <> "" Then
-                output = HttpContext.Current.Session(round.ToString + "game" + cntr.ToString)
-            End If
-            Select Case round
-                Case 1
+        Select Case round
+            Case 1
+                For Each team In theBracket
+                    Dim output As String = "<a href=""?game=" + cntr.ToString + "&round=" + round.ToString + """>Play Game!</a>"
+                    If HttpContext.Current.Session(round.ToString + "game" + cntr.ToString) <> "" Then
+                        output = HttpContext.Current.Session(round.ToString + "game" + cntr.ToString)
+                    End If
                     If team <> "" Then
                         sb.Append(team)
                     Else
@@ -128,22 +178,35 @@ Public Class MarchAlgorithm
                     For i = 0 To round - 1
                         sb.Append("<br/>")
                     Next
-                Case 2
+                    cntr += 1
+                Next
+            Case 2
+                For i = 0 To 31
+                    Dim output As String = "<a href=""?game=" + cntr.ToString + "&round=" + round.ToString + """>Play Game!</a>"
+                    If HttpContext.Current.Session(round.ToString + "game" + cntr.ToString) <> "" Then
+                        output = HttpContext.Current.Session(round.ToString + "game" + cntr.ToString)
+                    End If
                     sb.Append(output)
-                    For i = 0 To round - 1
+                    For j = 0 To round - 1
                         sb.Append("<br/>")
                     Next
-                Case 4, 8, 16, 32, 64
-                    For i = 0 To (round / 2) - 1
+                Next
+            Case 4, 8, 16, 32, 64
+                For i = 0 To teams - 1
+                    Dim output As String = "<a href=""?game=" + i.ToString + "&round=" + round.ToString + """>Play Game!</a>"
+                    If HttpContext.Current.Session(round.ToString + "game" + i.ToString) <> "" Then
+                        output = HttpContext.Current.Session(round.ToString + "game" + i.ToString)
+                    End If
+                    For j = 0 To (round / 4) - 1
                         sb.Append("<br/>")
                     Next
-                    sb.Append(team)
-                    For i = 0 To (round / 2) - 1
+                    sb.Append(output)
+                    For k = 0 To (round / 1) - Math.Sqrt(round)
                         sb.Append("<br/>")
                     Next
-            End Select
-            cntr += 1
-        Next
+                Next
+        End Select
+
 
         Return sb.ToString
     End Function
@@ -242,21 +305,21 @@ Public Class MarchAlgorithm
 
     Public Shared Function getBracketList2020() As List(Of String)
         Return New List(Of String) From {
-            "Kansas", "", "Arizona St.", "Florida",
+            "Kansas", "Robert Morris", "Arizona St.", "Florida",
             "Wisconsin", "East Tennessee St.", "Kentucky", "Vermont",
             "Illinois", "Cincinnati", "Duke", "Little Rock",
             "Michigan", "Utah St.", "Creighton", "Belmont",
             "Baylor", "Boston University", "Marquette", "Arizona",
             "Ohio St.", "Yale", "Butler", "Bradley",
-            "Virginia", "", "Maryland", "UC Irvine",
+            "Virginia", "Richmond", "Maryland", "UC Irvine",
             "Providence", "LSU", "Florida St.", "Northern Kentucky",
             "Dayton", "Winthrop", "Saint Mary's", "Oklahoma",
             "Auburn", "Akron", "Louisville", "Liberty",
             "West Virginia", "Rutgers", "Michigan St.", "North Texas",
             "USC", "Indiana", "Villanova", "North Dakota St.",
-            "Gonzaga", "", "Houston", "Colorado",
+            "Gonzaga", "Siena", "Houston", "Colorado",
             "Penn St.", "Stephen F. Austin", "Oregon", "New Mexico St.",
-            "BYU", "", "Seton Hall", "Hofstra",
+            "BYU", "Stanford", "Seton Hall", "Hofstra",
             "Iowa", "Xavier", "San Diego St.", "Eastern Washington"
             }
     End Function
@@ -265,6 +328,77 @@ Public Class MarchAlgorithm
         Return New List(Of String) From {
             "North Carolina Central", "Robert Morris", "Richmond", "Wichita St.",
             "Prairie View A&M", "Siena", "Stanford", "UCLA"
+            }
+    End Function
+
+    Public Shared Function getBracketList2020SecondRound() As List(Of String)
+        Return New List(Of String) From {
+            "Kansas", "Arizona St.",
+            "Wisconsin", "Vermont",
+            "Cincinnati", "Duke",
+            "Utah St.", "Creighton",
+            "Baylor", "Marquette",
+            "Yale", "Butler",
+            "Virginia", "Maryland",
+            "LSU", "Florida St.",
+            "Dayton", "Oklahoma",
+            "Akron", "Liberty",
+            "Rutgers", "Michigan St.",
+            "Indiana", "Villanova",
+            "Gonzaga", "Houston",
+            "Penn St.", "Oregon",
+            "Stanford", "Seton Hall",
+            "Xavier", "San Diego St."
+            }
+    End Function
+
+    Public Shared Function getBracketList2020SweetSixteen() As List(Of String)
+        Return New List(Of String) From {
+            "Arizona St.",
+            "Wisconsin",
+            "Duke",
+            "Utah St.",
+            "Marquette",
+            "Yale",
+            "Virginia",
+            "Florida St.",
+            "Oklahoma",
+            "Liberty",
+            "Rutgers",
+            "Indiana",
+            "Gonzaga",
+            "Oregon",
+            "Stanford",
+            "San Diego St."
+            }
+    End Function
+
+    Public Shared Function getBracketList2020EliteEight() As List(Of String)
+        Return New List(Of String) From {
+            "Wisconsin",
+            "Duke",
+            "Marquette",
+            "Virginia",
+            "Oklahoma",
+            "Rutgers",
+            "Gonzaga",
+            "Stanford"
+            }
+    End Function
+
+    Public Shared Function getBracketList2020FinalFour() As List(Of String)
+        Return New List(Of String) From {
+            "Wisconsin",
+            "Marquette",
+            "Rutgers",
+            "Gonzaga"
+            }
+    End Function
+
+    Public Shared Function getBracketList2020Championship() As List(Of String)
+        Return New List(Of String) From {
+            "Wisconsin",
+            "Gonzaga"
             }
     End Function
 

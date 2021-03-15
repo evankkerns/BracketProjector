@@ -10,7 +10,7 @@ Public Class MarchAlgorithm
     Public Shared Function runBracket() As String
         Dim sb As New StringBuilder
         Dim theRankings As KenPomRankings = loadRankings()
-        Dim theBracket As List(Of String) = getBracketList2019()
+        Dim theBracket As List(Of String) = getBracketList2021()
 
         sb.Append("<table>")
 
@@ -303,6 +303,49 @@ Public Class MarchAlgorithm
         Return New Team
     End Function
 
+
+    Public Shared Function getBracketList2021() As List(Of String)
+        Return New List(Of String) From {
+            "Gonzaga 1", "Norfolk St. 16", "Oklahoma 8", "Missouri 9",
+            "Creighton 5", "UC Santa Barbara 12", "Virginia 4", "Ohio 13",
+            "USC 6", "Wichita St. 11", "Kansas 3", "Eastern Washington 14",
+            "Oregon 7", "VCU 10", "Iowa 2", "Grand Canyon 15",
+            "Michigan 1", "Mount St. Mary's 16", "LSU 8", "St. Bonaventure 9",
+            "Colorado 5", "Georgetown 12", "Florida St. 4", "UNC Greensboro 13",
+            "BYU 6", "Michigan St. 11", "Texas 3", "Abilene Christian 14",
+            "Connecticut 7", "Maryland 10", "Alabama 2", "Iona 15",
+            "Baylor 1", "Hartford 16", "North Carolina 8", "Wisconsin 9",
+            "Villanova 5", "Winthrop 12", "Purdue 4", "North Texas 13",
+            "Texas Tech 6", "Utah St. 11", "Arkansas 3", "Colgate 14",
+            "Florida 7", "Virginia Tech 10", "Ohio St. 2", "Oral Roberts 15",
+            "Illinois 1", "Drexel 16", "Loyola Chicago 8", "Georgia Tech 9",
+            "Tennessee 5", "Oregon St. 12", "Oklahoma St. 4", "Liberty 13",
+            "San Diego St. 6", "Syracuse 11", "West Virginia 3", "Morehead St. 14",
+            "Clemson 7", "Rutgers 10", "Houston 2", "Cleveland St. 15"
+        }
+        'Appalachian St. 16
+        'Drake 11
+        'Texas Southern 16
+        'UCLA 11
+    End Function
+
+    '    "Duke 1", "North Dakota St. 16", "VCU 8", "UCF 9",
+    '"Mississippi St. 5", "Liberty 12", "Virginia Tech 4", "Saint Louis 13",
+    '"Maryland 6", "Belmont 11", "LSU 3", "Yale 14",
+    '"Louisville 7", "Minnesota 10", "Michigan St. 2", "Bradley 15",
+    '"Gonzaga 1", "Fairleigh Dickinson 16", "Syracuse 8", "Baylor 9",
+    '"Marquette 5", "Murray St. 12", "Florida St. 4", "Vermont 13",
+    '"Buffalo 6", "Arizona St. 11", "Texas Tech 3", "Northern Kentucky 14",
+    '"Nevada 7", "Florida 10", "Michigan 2", "Montana 15",
+    '"Virginia 1", "Gardner Webb 16", "Mississippi 8", "Oklahoma 9",
+    '"Wisconsin 5", "Oregon 12", "Kansas St. 4", "UC Irvine 13",
+    '"Villanova 6", "Saint Mary's 11", "Purdue 3", "Old Dominion 14",
+    '"Cincinnati 7", "Iowa 10", "Tennessee 2", "Colgate 15",
+    '"North Carolina 1", "Iona 16", "Utah St. 8", "Washington 9",
+    '"Auburn 5", "New Mexico St. 12", "Kansas 4", "Northeastern 13",
+    '"Iowa St. 6", "Ohio St. 11", "Houston 3", "Georgia St. 14",
+    '"Wofford 7", "Seton Hall 10", "Kentucky 2", "Abilene Christian 15"
+
     Public Shared Function getBracketList2020() As List(Of String)
         Return New List(Of String) From {
             "Kansas", "Robert Morris", "Arizona St.", "Florida",
@@ -437,6 +480,6 @@ Public Class MarchAlgorithm
     End Function
 
     Public Shared Function loadRankings() As KenPomRankings
-        Return New JavaScriptSerializer().Deserialize(Of KenPomRankings)(System.IO.File.ReadAllText("C:\Users\Monster\source\repos\BracketProjector\BracketProjector\App_Data\rankings19.json"))
+        Return New JavaScriptSerializer().Deserialize(Of KenPomRankings)(System.IO.File.ReadAllText("C:\Users\Monster\source\repos\BracketProjector\BracketProjector\App_Data\rankings21.json"))
     End Function
 End Class

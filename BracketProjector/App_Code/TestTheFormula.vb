@@ -1,5 +1,9 @@
-﻿Public Class TestTheFormula
-    Public totalSims As Integer = 200000
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Text
+
+Public Class TestTheFormula
+    Public totalSims As Integer = 200
     Public timesWrong(32) As Integer
     Public perfectRounds As Integer = 0
     Public bestRound As Integer = 32
@@ -8,6 +12,58 @@
     Sub New()
 
     End Sub
+
+    Public Function getWinnerCount() As String
+        Dim sb As New StringBuilder
+        Dim theRankings As KenPomRankings = MarchAlgorithm.loadRankings()
+        Dim winnerCount(68) As Integer
+        Dim tournTeams() As String = {"test",
+            "Gonzaga 1", "Norfolk St. 16", "Oklahoma 8", "Missouri 9",
+            "Creighton 5", "UC Santa Barbara 12", "Virginia 4", "Ohio 13",
+            "USC 6", "Wichita St. 11", "Kansas 3", "Eastern Washington 14",
+            "Oregon 7", "VCU 10", "Iowa 2", "Grand Canyon 15",
+            "Michigan 1", "Mount St. Mary's 16", "LSU 8", "St. Bonaventure 9",
+            "Colorado 5", "Georgetown 12", "Florida St. 4", "UNC Greensboro 13",
+            "BYU 6", "Michigan St. 11", "Texas 3", "Abilene Christian 14",
+            "Connecticut 7", "Maryland 10", "Alabama 2", "Iona 15",
+            "Baylor 1", "Hartford 16", "North Carolina 8", "Wisconsin 9",
+            "Villanova 5", "Winthrop 12", "Purdue 4", "North Texas 13",
+            "Texas Tech 6", "Utah St. 11", "Arkansas 3", "Colgate 14",
+            "Florida 7", "Virginia Tech 10", "Ohio St. 2", "Oral Roberts 15",
+            "Illinois 1", "Drexel 16", "Loyola Chicago 8", "Georgia Tech 9",
+            "Tennessee 5", "Oregon St. 12", "Oklahoma St. 4", "Liberty 13",
+            "San Diego St. 6", "Syracuse 11", "West Virginia 3", "Morehead St. 14",
+            "Clemson 7", "Rutgers 10", "Houston 2", "Cleveland St. 15"
+        }
+
+        For i = 0 To totalSims - 1
+            Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2021()
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 64)
+            Threading.Thread.Sleep(1000)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 32)
+            Threading.Thread.Sleep(1000)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 16)
+            Threading.Thread.Sleep(1000)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 8)
+            Threading.Thread.Sleep(1000)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 4)
+            Threading.Thread.Sleep(1000)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 2)
+
+            Dim winner = Array.IndexOf(tournTeams, theBracket(0))
+            winnerCount(winner) += 1
+
+            Threading.Thread.Sleep(200)
+        Next
+
+        For i = 0 To tournTeams.Length - 1
+            If winnerCount(i) > 0 Then
+                sb.Append(winnerCount(i).ToString + ": " + tournTeams(i) + "<br/>")
+            End If
+        Next
+
+        Return sb.ToString
+    End Function
 
     Public Function testTheFormula() As String
         Dim sb As New StringBuilder

@@ -57,6 +57,42 @@ Public Class MarchAlgorithm
         Return sb.ToString
     End Function
 
+    Public Shared Function runSecondChance() As String
+        Dim sb As New StringBuilder
+        Dim theRankings As KenPomRankings = loadRankings()
+        Dim theBracket As List(Of String) = getSweetSixteen2021()
+
+        sb.Append("<table>")
+
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 1))
+        theBracket = simRound(theRankings, theBracket, 16)
+        sb.Append("</td>")
+        Threading.Thread.Sleep(1000)
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 2))
+        theBracket = simRound(theRankings, theBracket, 8)
+        sb.Append("</td>")
+        Threading.Thread.Sleep(1000)
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 4))
+        theBracket = simRound(theRankings, theBracket, 4)
+        sb.Append("</td>")
+        Threading.Thread.Sleep(1000)
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 8))
+        theBracket = simRound(theRankings, theBracket, 2)
+        sb.Append("</td>")
+        Threading.Thread.Sleep(1000)
+        sb.Append("<td>")
+        sb.Append(printTeams(theBracket, 16))
+        sb.Append("</td>")
+
+        sb.Append("</table>")
+
+        Return sb.ToString
+    End Function
+
     Public Shared Function simRound(theRankings As KenPomRankings, theBracket As List(Of String), teamsInRound As Integer) As List(Of String)
         Dim newBracket As New List(Of String)
         Dim r As New Random
@@ -109,9 +145,9 @@ Public Class MarchAlgorithm
         Return New List(Of String) From {
             "Gonzaga 1", "Norfolk St. 16", "Oklahoma 8", "Missouri 9",
             "Creighton 5", "UC Santa Barbara 12", "Virginia 4", "Ohio 13",
-            "USC 6", "Wichita St. 11", "Kansas 3", "Eastern Washington 14",
+            "USC 6", "Drake 11", "Kansas 3", "Eastern Washington 14",
             "Oregon 7", "VCU 10", "Iowa 2", "Grand Canyon 15",
-            "Michigan 1", "Mount St. Mary's 16", "LSU 8", "St. Bonaventure 9",
+            "Michigan 1", "Texas Southern 16", "LSU 8", "St. Bonaventure 9",
             "Colorado 5", "Georgetown 12", "Florida St. 4", "UNC Greensboro 13",
             "BYU 6", "UCLA 11", "Texas 3", "Abilene Christian 14",
             "Connecticut 7", "Maryland 10", "Alabama 2", "Iona 15",
@@ -128,6 +164,27 @@ Public Class MarchAlgorithm
         'Drake 11 / Wichita St. 11
         'Texas Southern 16 / Mount St. Mary's 16
         'UCLA 11 / Michigan St. 11
+    End Function
+
+    Public Shared Function getSweetSixteen2021() As List(Of String)
+        Return New List(Of String) From {
+            "Gonzaga 1",
+            "Creighton 5",
+            "USC 6",
+            "Oregon 7",
+            "Michigan 1",
+            "Florida St. 4",
+            "UCLA 11",
+            "Alabama 2",
+            "Baylor 1",
+            "Villanova 5",
+            "Arkansas 3",
+            "Oral Roberts 15",
+            "Loyola Chicago 8",
+            "Oregon St. 12",
+            "Syracuse 11",
+            "Houston 2"
+        }
     End Function
 
     'Public Shared Function runBracketPerRound() As String

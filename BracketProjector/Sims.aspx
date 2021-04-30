@@ -4,7 +4,7 @@
 
     <div class="jumbotron">
         <p class="lead"><% Dim ttf As New TestTheFormula %>
-           <% =ttf.getWinnerCount() %></p>
+           <% =ttf.getFinalFourCheck() %></p>
     </div>
 
 </asp:Content>

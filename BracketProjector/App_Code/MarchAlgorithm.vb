@@ -15,41 +15,114 @@ Public Class MarchAlgorithm
         Dim sb As New StringBuilder
         Dim theRankings As KenPomRankings = loadRankings()
         Dim theBracket As List(Of String) = getBracketList2021()
+        Dim thePrintList(12) As String
+
+        thePrintList = printList(theBracket, 1, thePrintList)
+        theBracket = simRound(theRankings, theBracket, 64)
+
+        Threading.Thread.Sleep(1000)
+
+        thePrintList = printList(theBracket, 2, thePrintList)
+        theBracket = simRound(theRankings, theBracket, 32)
+
+        Threading.Thread.Sleep(1000)
+
+        thePrintList = printList(theBracket, 3, thePrintList)
+        theBracket = simRound(theRankings, theBracket, 16)
+
+        Threading.Thread.Sleep(1000)
+
+        thePrintList = printList(theBracket, 4, thePrintList)
+        theBracket = simRound(theRankings, theBracket, 8)
+
+        Threading.Thread.Sleep(1000)
+
+        thePrintList = printList(theBracket, 5, thePrintList)
+        theBracket = simRound(theRankings, theBracket, 4)
+
+        Threading.Thread.Sleep(1000)
+
+        thePrintList = printList(theBracket, 6, thePrintList)
+        theBracket = simRound(theRankings, theBracket, 2)
+
+        Threading.Thread.Sleep(1000)
+
+        thePrintList = printList(theBracket, 7, thePrintList)
+
+        sb.Append("<table>")
+        sb.Append("<td style=""width: 259px; vertical-align:top"">-")
+        sb.Append("</td>")
+        For Each col In thePrintList
+            sb.Append("<td style=""width: 259px; vertical-align:top"">")
+            sb.Append(col)
+            sb.Append("</td>")
+        Next
+        sb.Append("<td style=""width: 259px; vertical-align:top"">-")
+        sb.Append("</td>")
+        sb.Append("</table>")
+
+        Return sb.ToString
+    End Function
+
+    Public Shared Function runBracketOld() As String
+        Dim sb As New StringBuilder
+        Dim theRankings As KenPomRankings = loadRankings()
+        Dim theBracket As List(Of String) = getBracketList2021()
+        Dim thePrintList(12) As String
 
         sb.Append("<table>")
 
         sb.Append("<td>")
         sb.Append(printTeams(theBracket, 1))
+        thePrintList = printList(theBracket, 1, thePrintList)
         theBracket = simRound(theRankings, theBracket, 64)
         sb.Append("</td>")
+
         Threading.Thread.Sleep(1000)
+
         sb.Append("<td>")
         sb.Append(printTeams(theBracket, 2))
+        thePrintList = printList(theBracket, 2, thePrintList)
         theBracket = simRound(theRankings, theBracket, 32)
         sb.Append("</td>")
+
         Threading.Thread.Sleep(1000)
+
         sb.Append("<td>")
         sb.Append(printTeams(theBracket, 4))
+        thePrintList = printList(theBracket, 3, thePrintList)
         theBracket = simRound(theRankings, theBracket, 16)
         sb.Append("</td>")
+
         Threading.Thread.Sleep(1000)
+
         sb.Append("<td>")
         sb.Append(printTeams(theBracket, 8))
+        thePrintList = printList(theBracket, 4, thePrintList)
         theBracket = simRound(theRankings, theBracket, 8)
         sb.Append("</td>")
+
         Threading.Thread.Sleep(1000)
+
         sb.Append("<td>")
         sb.Append(printTeams(theBracket, 16))
+        thePrintList = printList(theBracket, 5, thePrintList)
         theBracket = simRound(theRankings, theBracket, 4)
         sb.Append("</td>")
+
         Threading.Thread.Sleep(1000)
+
         sb.Append("<td>")
         sb.Append(printTeams(theBracket, 32))
+        thePrintList = printList(theBracket, 6, thePrintList)
         theBracket = simRound(theRankings, theBracket, 2)
         sb.Append("</td>")
+
         Threading.Thread.Sleep(1000)
+
         sb.Append("<td>")
         sb.Append(printTeams(theBracket, 64))
+        thePrintList = printList(theBracket, 7, thePrintList)
         sb.Append("</td>")
 
         sb.Append("</table>")
@@ -128,6 +201,59 @@ Public Class MarchAlgorithm
         Next
 
         Return sb.ToString
+    End Function
+
+    Public Shared Function printList(theBracket As List(Of String), round As Integer, theList() As String) As String()
+        Dim sbLeft As New StringBuilder
+        Dim sbRight As New StringBuilder
+
+        If round <= 1 Then
+            For leftSide = 0 To (theBracket.Count / 2) - 1
+                sbLeft.Append(theBracket(leftSide))
+                For i = 0 To (2 ^ (round - 1)) - 1
+                    sbLeft.Append("<br/>")
+                Next
+            Next
+
+            For rightSide = theBracket.Count / 2 To theBracket.Count - 1
+                sbRight.Append(theBracket(rightSide))
+                For i = 0 To (2 ^ (round - 1)) - 1
+                    sbRight.Append("<br/>")
+                Next
+            Next
+        Else
+            For leftSide = 0 To (theBracket.Count / 2) - 1
+                For i = 0 To (((2 ^ (round - 1)) - 1) / 2)
+                    sbLeft.Append("<br/>")
+                Next
+                sbLeft.Append(theBracket(leftSide))
+                For i = 0 To (((2 ^ (round - 1)) - 1) / 2)
+                    sbLeft.Append("<br/>")
+                Next
+            Next
+
+            For rightSide = theBracket.Count / 2 To theBracket.Count - 1
+                For i = 0 To (((2 ^ (round - 1)) - 1) / 2)
+                    sbRight.Append("<br/>")
+                Next
+                sbRight.Append(theBracket(rightSide))
+                For i = 0 To (((2 ^ (round - 1)) - 1) / 2)
+                    sbRight.Append("<br/>")
+                Next
+            Next
+        End If
+
+        If round = 7 Then
+            For i = 0 To (((2 ^ (round - 1)) - 1) / 6)
+                sbRight.Append("<br/>")
+            Next
+            sbRight.Append(theBracket(0))
+        End If
+
+        theList(round - 1) = sbLeft.ToString
+        theList(13 - round) = sbRight.ToString
+
+        Return theList
     End Function
 
     Public Shared Function getKPR(theRankings As KenPomRankings, teamName As String) As Team

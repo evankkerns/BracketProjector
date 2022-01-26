@@ -3,7 +3,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <p class="lead"><% =MarchAlgorithm.runSecondChance() %></p>
+        <p class="lead"><% =MarchAlgorithm.runBracket() %></p>
     </div>
 
 </asp:Content>

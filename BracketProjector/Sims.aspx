@@ -2,9 +2,9 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div class="jumbotron">
+    <div>
         <p class="lead"><% Dim ttf As New TestTheFormula %>
-           <% =ttf.getFinalFourCheck() %></p>
+           <% =ttf.simFinalFourCount() %></p>
     </div>
 
 </asp:Content>

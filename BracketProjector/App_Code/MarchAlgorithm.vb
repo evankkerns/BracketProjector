@@ -13,8 +13,11 @@ Public Class MarchAlgorithm
 
     Public Shared Function runBracket() As String
         Dim sb As New StringBuilder
-        Dim theRankings As KenPomRankings = loadRankings()
-        Dim theBracket As List(Of String) = getBracketList2021()
+        Dim theRankings As KenPomRankings = loadRankings() 'Update file location within this function to correct year of data
+        Dim theBracket As List(Of String) = getBracketList2023()
+
+        'Dim tester = testDataIntegrity(theRankings, theBracket)
+
         Dim thePrintList(12) As String
 
         thePrintList = printList(theBracket, 1, thePrintList)
@@ -169,13 +172,23 @@ Public Class MarchAlgorithm
     Public Shared Function simRound(theRankings As KenPomRankings, theBracket As List(Of String), teamsInRound As Integer) As List(Of String)
         Dim newBracket As New List(Of String)
         Dim r As New Random
+        Dim multi As Double = 2
+        Select Case teamsInRound
+            Case 64
+                multi = 1
+            Case 32
+                multi = 1.5
+            Case Else
+                multi = 2
+        End Select
+
 
         For i = 0 To teamsInRound - 2 Step 2
             Dim teamA As Team = getKPR(theRankings, theBracket(i))
             Dim teamB As Team = getKPR(theRankings, theBracket(i + 1))
 
-            Dim oDiff As Double = (teamA.AdjO - teamB.AdjO) * 4
-            Dim dDiff As Double = (teamB.AdjD - teamA.AdjD) * 5
+            Dim oDiff As Double = (teamA.AdjO - teamB.AdjO) * 4 * multi
+            Dim dDiff As Double = (teamB.AdjD - teamA.AdjD) * 4 * multi
             Dim diff As Double = (oDiff + dDiff) / 2
 
             'Threading.Thread.Sleep(100)
@@ -266,6 +279,55 @@ Public Class MarchAlgorithm
         Return New Team
     End Function
 
+    Public Shared Function getBracketList2023() As List(Of String)
+        Return New List(Of String) From {
+            "Alabama 1", "Texas A&M Corpus Chris 16", "Maryland 8", "West Virginia 9",
+            "San Diego St. 5", "Charleston 12", "Virginia 4", "Furman 13",
+            "Creighton 6", "N.C. State 11", "Baylor 3", "UC Santa Barbara 14",
+            "Missouri 7", "Utah St. 10", "Arizona 2", "Princeton 15",
+            "Purdue 1", "Texas Southern 16", "Memphis 8", "Florida Atlantic 9",
+            "Duke 5", "Oral Roberts 12", "Tennessee 4", "Louisiana 13",
+            "Kentucky 6", "Providence 11", "Kansas St. 3", "Montana St. 14",
+            "Michigan St. 7", "USC 10", "Marquette 2", "Vermont 15",
+            "Houston 1", "Northern Kentucky 16", "Iowa 8", "Auburn 9",
+            "Miami FL 5", "Drake 12", "Indiana 4", "Kent St. 13",
+            "Iowa St. 6", "Mississippi St. 11", "Xavier 3", "Kennesaw St. 14",
+            "Texas A&M 7", "Penn St. 10", "Texas 2", "Colgate 15",
+            "Kansas 1", "Howard 16", "Arkansas 8", "Illinois 9",
+            "Saint Mary's 5", "VCU 12", "Connecticut 4", "Iona 13",
+            "TCU 6", "Nevada 11", "Gonzaga 3", "Grand Canyon 14",
+            "Northwestern 7", "Boise St. 10", "UCLA 2", "UNC Asheville 15"
+        }
+        'Texas A&M Corpus Chris 16 / Southeast Missouri St. 16
+        'Texas Southern 16 / Fairleigh Dickinson 16
+        'Mississippi St. 11 / Pittsburgh 11
+        'Arizona St. 11 / Nevada 11
+    End Function
+
+    Public Shared Function getBracketList2022() As List(Of String)
+        Return New List(Of String) From {
+            "Gonzaga 1", "Georgia St. 16", "Boise St. 8", "Memphis 9",
+            "Connecticut 5", "New Mexico St. 12", "Arkansas 4", "Vermont 13",
+            "Alabama 6", "Notre Dame 11", "Texas Tech 3", "Montana St. 14",
+            "Michigan St. 7", "Davidson 10", "Duke 2", "Cal St. Fullerton 15",
+            "Baylor 1", "Norfolk St. 16", "North Carolina 8", "Marquette 9",
+            "Saint Mary's 5", "Indiana 12", "UCLA 4", "Akron 13",
+            "Texas 6", "Virginia Tech 11", "Purdue 3", "Yale 14",
+            "Murray St. 7", "San Francisco 10", "Kentucky 2", "Saint Peter's 15",
+            "Arizona 1", "Wright St. 16", "Seton Hall 8", "TCU 9",
+            "Houston 5", "UAB 12", "Illinois 4", "Chattanooga 13",
+            "Colorado St. 6", "Michigan 11", "Tennessee 3", "Longwood 14",
+            "Ohio St. 7", "Loyola Chicago 10", "Villanova 2", "Delaware 15",
+            "Kansas 1", "Texas Southern 16", "San Diego St. 8", "Creighton 9",
+            "Iowa 5", "Richmond 12", "Providence 4", "South Dakota St. 13",
+            "LSU 6", "Iowa St. 11", "Wisconsin 3", "Colgate 14",
+            "USC 7", "Miami FL 10", "Auburn 2", "Jacksonville St. 15"
+        }
+        'Rutgers 11 / Notre Dame 11
+        'Indiana 12 / Wyoming 12
+        'Wright St. 16 / Bryant 16
+        'Texas Southern 16 / Texas A&M Corpus Chris 16
+    End Function
 
     Public Shared Function getBracketList2021() As List(Of String)
         Return New List(Of String) From {
@@ -668,6 +730,6 @@ Public Class MarchAlgorithm
     End Function
 
     Public Shared Function loadRankings() As KenPomRankings
-        Return New JavaScriptSerializer().Deserialize(Of KenPomRankings)(System.IO.File.ReadAllText("C:\Users\ekerns\Documents\GitHub\BracketProjector\BracketProjector\App_Data\rankings21.json"))
+        Return New JavaScriptSerializer().Deserialize(Of KenPomRankings)(System.IO.File.ReadAllText("C:\Users\ekerns\Documents\GitHub\BracketProjector\BracketProjector\App_Data\rankings23.json"))
     End Function
 End Class

@@ -149,6 +149,8 @@
     <Content Include="App_Data\rankings19.json" />
     <Content Include="App_Data\rankings20.json" />
     <Content Include="App_Data\rankings21.json" />
+    <Content Include="App_Data\rankings22.json" />
+    <Content Include="App_Data\rankings23.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

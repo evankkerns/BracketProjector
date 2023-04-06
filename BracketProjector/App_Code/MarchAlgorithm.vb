@@ -23,32 +23,32 @@ Public Class MarchAlgorithm
         thePrintList = printList(theBracket, 1, thePrintList)
         theBracket = simRound(theRankings, theBracket, 64)
 
-        Threading.Thread.Sleep(1000)
+        'Threading.Thread.Sleep(1000)
 
         thePrintList = printList(theBracket, 2, thePrintList)
         theBracket = simRound(theRankings, theBracket, 32)
 
-        Threading.Thread.Sleep(1000)
+        'Threading.Thread.Sleep(1000)
 
         thePrintList = printList(theBracket, 3, thePrintList)
         theBracket = simRound(theRankings, theBracket, 16)
 
-        Threading.Thread.Sleep(1000)
+        'Threading.Thread.Sleep(1000)
 
         thePrintList = printList(theBracket, 4, thePrintList)
         theBracket = simRound(theRankings, theBracket, 8)
 
-        Threading.Thread.Sleep(1000)
+        'Threading.Thread.Sleep(1000)
 
         thePrintList = printList(theBracket, 5, thePrintList)
         theBracket = simRound(theRankings, theBracket, 4)
 
-        Threading.Thread.Sleep(1000)
+        'Threading.Thread.Sleep(1000)
 
         thePrintList = printList(theBracket, 6, thePrintList)
         theBracket = simRound(theRankings, theBracket, 2)
 
-        Threading.Thread.Sleep(1000)
+        'Threading.Thread.Sleep(1000)
 
         thePrintList = printList(theBracket, 7, thePrintList)
 
@@ -178,6 +178,10 @@ Public Class MarchAlgorithm
                 multi = 1
             Case 32
                 multi = 1.5
+            Case 16
+                multi = 2
+            Case 8
+                multi = 2
             Case Else
                 multi = 2
         End Select
@@ -187,12 +191,18 @@ Public Class MarchAlgorithm
             Dim teamA As Team = getKPR(theRankings, theBracket(i))
             Dim teamB As Team = getKPR(theRankings, theBracket(i + 1))
 
-            Dim oDiff As Double = (teamA.AdjO - teamB.AdjO) * 4 * multi
-            Dim dDiff As Double = (teamB.AdjD - teamA.AdjD) * 4 * multi
+            Dim off As Double = r.Next(250, 500)
+            Dim def As Double = r.Next(250, 500)
+            off = off / 100
+            def = def / 100
+
+            Dim oDiff As Double = (teamA.AdjO - teamB.AdjO) * off * multi
+            Dim dDiff As Double = (teamB.AdjD - teamA.AdjD) * def * multi
             Dim diff As Double = (oDiff + dDiff) / 2
 
             'Threading.Thread.Sleep(100)
-            Dim score = r.Next(1, 101)
+            Dim score = r.Next(1, 10001)
+            score = score / 100
             If score < diff + 50 Then
                 newBracket.Add(theBracket(i))
             Else
@@ -285,17 +295,17 @@ Public Class MarchAlgorithm
             "San Diego St. 5", "Charleston 12", "Virginia 4", "Furman 13",
             "Creighton 6", "N.C. State 11", "Baylor 3", "UC Santa Barbara 14",
             "Missouri 7", "Utah St. 10", "Arizona 2", "Princeton 15",
-            "Purdue 1", "Texas Southern 16", "Memphis 8", "Florida Atlantic 9",
+            "Purdue 1", "Fairleigh Dickinson 16", "Memphis 8", "Florida Atlantic 9",
             "Duke 5", "Oral Roberts 12", "Tennessee 4", "Louisiana 13",
             "Kentucky 6", "Providence 11", "Kansas St. 3", "Montana St. 14",
             "Michigan St. 7", "USC 10", "Marquette 2", "Vermont 15",
             "Houston 1", "Northern Kentucky 16", "Iowa 8", "Auburn 9",
             "Miami FL 5", "Drake 12", "Indiana 4", "Kent St. 13",
-            "Iowa St. 6", "Mississippi St. 11", "Xavier 3", "Kennesaw St. 14",
+            "Iowa St. 6", "Pittsburgh 11", "Xavier 3", "Kennesaw St. 14",
             "Texas A&M 7", "Penn St. 10", "Texas 2", "Colgate 15",
             "Kansas 1", "Howard 16", "Arkansas 8", "Illinois 9",
             "Saint Mary's 5", "VCU 12", "Connecticut 4", "Iona 13",
-            "TCU 6", "Nevada 11", "Gonzaga 3", "Grand Canyon 14",
+            "TCU 6", "Arizona St. 11", "Gonzaga 3", "Grand Canyon 14",
             "Northwestern 7", "Boise St. 10", "UCLA 2", "UNC Asheville 15"
         }
         'Texas A&M Corpus Chris 16 / Southeast Missouri St. 16

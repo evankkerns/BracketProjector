@@ -14,7 +14,7 @@ Public Class MarchAlgorithm
     Public Shared Function runBracket() As String
         Dim sb As New StringBuilder
         Dim theRankings As KenPomRankings = loadRankings() 'Update file location within this function to correct year of data
-        Dim theBracket As List(Of String) = getBracketList2023()
+        Dim theBracket As List(Of String) = getBracketList2024()
 
         'Dim tester = testDataIntegrity(theRankings, theBracket)
 
@@ -175,15 +175,17 @@ Public Class MarchAlgorithm
         Dim multi As Double = 2
         Select Case teamsInRound
             Case 64
-                multi = 1
+                multi = 1.0
             Case 32
-                multi = 1.5
+                multi = 1.3
             Case 16
-                multi = 2
+                multi = 1.7
             Case 8
-                multi = 2
+                multi = 1.4
+            Case 4
+                multi = 0.6
             Case Else
-                multi = 2
+                multi = 0.2
         End Select
 
 
@@ -287,6 +289,31 @@ Public Class MarchAlgorithm
         Next
 
         Return New Team
+    End Function
+
+    Public Shared Function getBracketList2024() As List(Of String)
+        Return New List(Of String) From {
+            "Connecticut 1", "Stetson 16", "Florida Atlantic 8", "Northwestern 9",
+            "San Diego St. 5", "UAB 12", "Auburn 4", "Yale 13",
+            "BYU 6", "Duquesne 11", "Illinois 3", "Morehead St. 14",
+            "Washington St. 7", "Drake 10", "Iowa St. 2", "South Dakota St. 15",
+            "North Carolina 1", "Howard 16", "Mississippi St. 8", "Michigan St. 9",
+            "St. Mary's 5", "Grand Canyon 12", "Alabama 4", "Charleston 13",
+            "Clemson 6", "New Mexico 11", "Baylor 3", "Colgate 14",
+            "Dayton 7", "Nevada 10", "Arizona 2", "Long Beach St. 15",
+            "Houston 1", "Longwood 16", "Nebraska 8", "Texas A&M 9",
+            "Wisconsin 5", "James Madison 12", "Duke 4", "Vermont 13",
+            "Texas Tech 6", "N.C. State 11", "Kentucky 3", "Oakland 14",
+            "Florida 7", "Colorado 10", "Marquette 2", "Western Kentucky 15",
+            "Purdue 1", "Montana St. 16", "Utah St. 8", "TCU 9",
+            "Gonzaga 5", "McNeese St. 12", "Kansas 4", "Samford 13",
+            "South Carolina 6", "Oregon 11", "Creighton 3", "Akron 14",
+            "Texas 7", "Colorado St. 10", "Tennessee 2", "Saint Peter's 15"
+        }
+        'Howard 16 / Wagner 16
+        'Boise St. 10 / Colorado 10
+        'Montana St. 16 / Grambling St. 16
+        'Colorado St. 10 / Virginia 10
     End Function
 
     Public Shared Function getBracketList2023() As List(Of String)
@@ -740,6 +767,6 @@ Public Class MarchAlgorithm
     End Function
 
     Public Shared Function loadRankings() As KenPomRankings
-        Return New JavaScriptSerializer().Deserialize(Of KenPomRankings)(System.IO.File.ReadAllText("C:\Users\ekerns\Documents\GitHub\BracketProjector\BracketProjector\App_Data\rankings23.json"))
+        Return New JavaScriptSerializer().Deserialize(Of KenPomRankings)(System.IO.File.ReadAllText("C:\Users\evank\OneDrive\Documents\Github\Repos\BracketProjector\BracketProjector\App_Data\rankings24.json"))
     End Function
 End Class

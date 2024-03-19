@@ -3,7 +3,7 @@ Imports System.Collections.Generic
 Imports System.Text
 
 Public Class TestTheFormula
-    Public totalSims As Integer = 10000000
+    Public totalSims As Integer = 10000
     Public timesWrong(32) As Integer
     Public simPerc(32) As Integer
     Public perfectRounds As Integer = 0
@@ -267,7 +267,7 @@ Public Class TestTheFormula
         Dim sbTest As New StringBuilder
         Dim theRankings As KenPomRankings = MarchAlgorithm.loadRankings()
         'Dim theFirstFour As List(Of String) = MarchAlgorithm.getFirstFour2020()
-        Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2023()
+        Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2024()
         Dim r As New Random
         Dim startTime As DateTime = DateTime.Now
 

@@ -150,6 +150,7 @@
     <Content Include="App_Data\rankings22.json" />
     <Content Include="App_Data\rankings23.json" />
     <Content Include="App_Data\rankings24.json" />
+    <Content Include="App_Data\rankings26.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

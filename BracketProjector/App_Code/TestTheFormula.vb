@@ -16,6 +16,7 @@ Public Class TestTheFormula
 
     Public Function getWinnerCount() As String
         Dim sb As New StringBuilder
+        Dim r As New Random
         Dim theRankings As KenPomRankings = MarchAlgorithm.loadRankings()
         Dim startTime As DateTime = DateTime.Now
         Dim winnerCount(68) As Integer
@@ -40,17 +41,17 @@ Public Class TestTheFormula
 
         For i = 0 To totalSims - 1
             Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2023()
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 64)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 64, r)
             'Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 32)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 32, r)
             'Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 16)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 16, r)
             'Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 8)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 8, r)
             'Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 4)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 4, r)
             'Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 2)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 2, r)
 
             Dim winner = Array.IndexOf(tournTeams, theBracket(0))
             winnerCount(winner) += 1
@@ -80,11 +81,11 @@ Public Class TestTheFormula
 
     Public Function simFinalFourCount() As String
         Dim sb As New StringBuilder
+        Dim r As New Random
         Dim sbTest As New StringBuilder
         Dim theRankings As KenPomRankings = MarchAlgorithm.loadRankings()
         'Dim theFirstFour As List(Of String) = MarchAlgorithm.getFirstFour2020()
         Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2023()
-        Dim r As New Random
         Dim startTime As DateTime = DateTime.Now
 
         Dim winnerCount(68) As Double
@@ -109,13 +110,13 @@ Public Class TestTheFormula
 
         For i = 0 To totalSims - 1
             theBracket = MarchAlgorithm.getBracketList2023()
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 64)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 64, r)
             'Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 32)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 32, r)
             'Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 16)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 16, r)
             'Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 8)
+            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 8, r)
 
             For j = 0 To 3
                 Dim winner = Array.IndexOf(tournTeams, theBracket(j))
@@ -181,83 +182,6 @@ Public Class TestTheFormula
         sb.Append("</table>")
 
         sb.Append("<br/>Total Sim Time: " + (DateTime.Now - startTime).TotalSeconds.ToString + "s")
-
-        Return sb.ToString
-    End Function
-
-    Public Function getWinnerCountSecondChance() As String
-        Dim sb As New StringBuilder
-        Dim theRankings As KenPomRankings = MarchAlgorithm.loadRankings()
-        Dim winnerCount(68) As Integer
-        Dim tournTeams() As String = {"test",
-            "Gonzaga 1",
-            "Creighton 5",
-            "USC 6",
-            "Oregon 7",
-            "Michigan 1",
-            "Florida St. 4",
-            "UCLA 11",
-            "Alabama 2",
-            "Baylor 1",
-            "Villanova 5",
-            "Arkansas 3",
-            "Oral Roberts 15",
-            "Loyola Chicago 8",
-            "Oregon St. 12",
-            "Syracuse 11",
-            "Houston 2"
-        }
-
-        For i = 0 To totalSims - 1
-            Dim theBracket As List(Of String) = MarchAlgorithm.getSweetSixteen2021()
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 16)
-            Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 8)
-            Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 4)
-            Threading.Thread.Sleep(1000)
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 2)
-
-            Dim winner = Array.IndexOf(tournTeams, theBracket(0))
-            winnerCount(winner) += 1
-
-            Threading.Thread.Sleep(200)
-        Next
-
-        For i = 0 To tournTeams.Length - 1
-            If winnerCount(i) > 0 Then
-                sb.Append(winnerCount(i).ToString + ": " + tournTeams(i) + "<br/>")
-            End If
-        Next
-
-        Return sb.ToString
-    End Function
-
-    Public Function getWinnerCountOneMatchup() As String
-        Dim sb As New StringBuilder
-        Dim theRankings As KenPomRankings = MarchAlgorithm.loadRankings()
-        Dim winnerCount(68) As Integer
-        Dim tournTeams() As String = {"test",
-            "Arkansas 3",
-            "Oral Roberts 15"
-        }
-
-        For i = 0 To totalSims - 1
-            Dim theBracket As List(Of String) = New List(Of String)({"Arkansas 3", "Oral Roberts 15"})
-
-            theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 2)
-
-            Dim winner = Array.IndexOf(tournTeams, theBracket(0))
-            winnerCount(winner) += 1
-
-            Threading.Thread.Sleep(200)
-        Next
-
-        For i = 0 To tournTeams.Length - 1
-            If winnerCount(i) > 0 Then
-                sb.Append(winnerCount(i).ToString + ": " + tournTeams(i) + "<br/>")
-            End If
-        Next
 
         Return sb.ToString
     End Function

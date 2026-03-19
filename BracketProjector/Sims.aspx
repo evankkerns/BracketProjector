@@ -4,7 +4,7 @@
 
     <div>
         <p class="lead"><% Dim ttf As New TestTheFormula %>
-           <% =ttf.simTheFirstRound() %></p>
+           <% =ttf.simFinalFourCount() %></p>
     </div>
 
 </asp:Content>

@@ -85,31 +85,30 @@ Public Class TestTheFormula
         Dim sbTest As New StringBuilder
         Dim theRankings As KenPomRankings = MarchAlgorithm.loadRankings()
         'Dim theFirstFour As List(Of String) = MarchAlgorithm.getFirstFour2020()
-        Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2023()
+        Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2026()
         Dim startTime As DateTime = DateTime.Now
 
         Dim winnerCount(68) As Double
-        Dim tournTeams() As String = {"test",
-            "Alabama 1", "Texas A&M Corpus Chris 16", "Maryland 8", "West Virginia 9",
-            "San Diego St. 5", "Charleston 12", "Virginia 4", "Furman 13",
-            "Creighton 6", "N.C. State 11", "Baylor 3", "UC Santa Barbara 14",
-            "Missouri 7", "Utah St. 10", "Arizona 2", "Princeton 15",
-            "Purdue 1", "Texas Southern 16", "Memphis 8", "Florida Atlantic 9",
-            "Duke 5", "Oral Roberts 12", "Tennessee 4", "Louisiana 13",
-            "Kentucky 6", "Providence 11", "Kansas St. 3", "Montana St. 14",
-            "Michigan St. 7", "USC 10", "Marquette 2", "Vermont 15",
-            "Houston 1", "Northern Kentucky 16", "Iowa 8", "Auburn 9",
-            "Miami FL 5", "Drake 12", "Indiana 4", "Kent St. 13",
-            "Iowa St. 6", "Mississippi St. 11", "Xavier 3", "Kennesaw St. 14",
-            "Texas A&M 7", "Penn St. 10", "Texas 2", "Colgate 15",
-            "Kansas 1", "Howard 16", "Arkansas 8", "Illinois 9",
-            "Saint Mary's 5", "VCU 12", "Connecticut 4", "Iona 13",
-            "TCU 6", "Nevada 11", "Gonzaga 3", "Grand Canyon 14",
-            "Northwestern 7", "Boise St. 10", "UCLA 2", "UNC Asheville 15"
+        Dim tournTeams() As String = {'"test",
+            "Duke 1", "Siena 16", "Ohio St. 8", "TCU 9",
+            "St. John's 5", "Northern Iowa 12", "Kansas 4", "Cal Baptist 13",
+            "Louisville 6", "South Florida 11", "Michigan St. 3", "North Dakota St. 14",
+            "UCLA 7", "UCF 10", "Connecticut 2", "Furman 15",
+            "Florida 1", "Prairie View A&M 16", "Clemson 8", "Iowa 9",
+            "Vanderbilt 5", "McNeese 12", "Nebraska 4", "Troy 13",
+            "North Carolina 6", "VCU 11", "Illinois 3", "Penn 14",
+            "Saint Mary's 7", "Texas A&M 10", "Houston 2", "Idaho 15",
+            "Arizona 1", "LIU 16", "Villanova 8", "Utah St. 9",
+            "Wisconsin 5", "High Point 12", "Arkansas 4", "Hawaii 13",
+            "BYU 6", "N.C. State 11", "Gonzaga 3", "Kennesaw St. 14",
+            "Miami FL 7", "Missouri 10", "Purdue 2", "Queens 15",
+            "Michigan 1", "UMBC 16", "Georgia 8", "Saint Louis 9",
+            "Texas Tech 5", "Akron 12", "Alabama 4", "Hofstra 13",
+            "Tennessee 6", "Miami OH 11", "Virginia 3", "Wright St. 14",
+            "Kentucky 7", "Santa Clara 10", "Iowa St. 2", "Tennessee St. 15"
         }
 
         For i = 0 To totalSims - 1
-            theBracket = MarchAlgorithm.getBracketList2023()
             theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 64, r)
             'Threading.Thread.Sleep(1000)
             theBracket = MarchAlgorithm.simRound(theRankings, theBracket, 32, r)
@@ -191,7 +190,7 @@ Public Class TestTheFormula
         Dim sbTest As New StringBuilder
         Dim theRankings As KenPomRankings = MarchAlgorithm.loadRankings()
         'Dim theFirstFour As List(Of String) = MarchAlgorithm.getFirstFour2020()
-        Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2024()
+        Dim theBracket As List(Of String) = MarchAlgorithm.getBracketList2026()
         Dim r As New Random
         Dim startTime As DateTime = DateTime.Now
 

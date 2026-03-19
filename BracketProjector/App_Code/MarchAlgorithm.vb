@@ -71,6 +71,8 @@ Public Class MarchAlgorithm
     Public Shared Function simRound(theRankings As KenPomRankings, theBracket As List(Of String), teamsInRound As Integer, r As Random) As List(Of String)
         Dim newBracket As New List(Of String)
         Dim multi As Double = 2
+
+        'Classic
         Select Case teamsInRound
             Case 64
                 multi = 1.0
@@ -85,6 +87,38 @@ Public Class MarchAlgorithm
             Case Else
                 multi = 0.2
         End Select
+
+        'Medium-High? Upset Chance
+        'Select Case teamsInRound
+        '    Case 64
+        '        multi = 0.9
+        '    Case 32
+        '        multi = 1.2
+        '    Case 16
+        '        multi = 1.6
+        '    Case 8
+        '        multi = 1.2
+        '    Case 4
+        '        multi = 0.8
+        '    Case Else
+        '        multi = 0.5
+        'End Select
+
+        'Higher Upset Chance
+        'Select Case teamsInRound
+        '    Case 64
+        '        multi = 0.8
+        '    Case 32
+        '        multi = 1.2
+        '    Case 16
+        '        multi = 1.5
+        '    Case 8
+        '        multi = 1.2
+        '    Case 4
+        '        multi = 0.8
+        '    Case Else
+        '        multi = 0.6
+        'End Select
 
 
         For i = 0 To teamsInRound - 2 Step 2
@@ -129,6 +163,7 @@ Public Class MarchAlgorithm
     Public Shared Function printList(theBracket As List(Of String), round As Integer, theList() As String) As String()
         Dim sbLeft As New StringBuilder
         Dim sbRight As New StringBuilder
+        Dim r As New Random
 
         If round <= 1 Then
             For leftSide = 0 To (theBracket.Count / 2) - 1
@@ -166,11 +201,16 @@ Public Class MarchAlgorithm
             Next
         End If
 
+        'Get final score prediction for Finals
+        Dim final = r.Next(120, 165)
+
         If round = 7 Then
             For i = 0 To (((2 ^ (round - 1)) - 1) / 6)
                 sbRight.Append("<br/>")
             Next
             sbRight.Append(theBracket(0))
+            sbRight.Append("<br/><br/>")
+            sbRight.Append("<i>" + final.ToString + "</i>")
         End If
 
         theList(round - 1) = sbLeft.ToString
@@ -201,9 +241,9 @@ Public Class MarchAlgorithm
             "Saint Mary's 7", "Texas A&M 10", "Houston 2", "Idaho 15",
             "Arizona 1", "LIU 16", "Villanova 8", "Utah St. 9",
             "Wisconsin 5", "High Point 12", "Arkansas 4", "Hawaii 13",
-            "BYU 6", "N.C. State 11", "Gonzaga 3", "Kennesaw St. 14",
+            "BYU 6", "Texas 11", "Gonzaga 3", "Kennesaw St. 14",
             "Miami FL 7", "Missouri 10", "Purdue 2", "Queens 15",
-            "Michigan 1", "UMBC 16", "Georgia 8", "Saint Louis 9",
+            "Michigan 1", "Howard 16", "Georgia 8", "Saint Louis 9",
             "Texas Tech 5", "Akron 12", "Alabama 4", "Hofstra 13",
             "Tennessee 6", "Miami OH 11", "Virginia 3", "Wright St. 14",
             "Kentucky 7", "Santa Clara 10", "Iowa St. 2", "Tennessee St. 15"
